@@ -191,6 +191,8 @@ main {
   margin-top: 8px;
   display: block;
   min-height: 1.2em;
+  white-space: pre-line;
+  line-height: 1.6;
 }
 
 /* Crit states */

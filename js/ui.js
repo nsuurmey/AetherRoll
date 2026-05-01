@@ -147,16 +147,21 @@
     // Build breakdown
     let breakdown = '';
     if (result.advantage || result.disadvantage) {
-      const g = result.groups[0];
-      breakdown = `Kept: [${g.kept.join(', ')}] | Dropped: [${g.dropped.join(', ')}]`;
+      const keptTotal    = result.kept.total;
+      const droppedTotal = result.dropped.total;
+      const keptDetail    = Dice.poolBreakdown(result.kept);
+      const droppedDetail = Dice.poolBreakdown(result.dropped);
+      const modStr = result.modifier !== 0
+        ? ` + mod ${result.modifier > 0 ? '+' : ''}${result.modifier}`
+        : '';
+      breakdown =
+        `✓ Roll A: ${keptTotal} (${keptDetail})${modStr}\n` +
+        `✗ Roll B: ${droppedTotal} (${droppedDetail})`;
     } else {
-      breakdown = result.groups.map(g => {
-        const flat = g.rolls.map(r => Array.isArray(r) ? r.join('→') : r);
-        return `d${g.sides}: [${flat.join(', ')}]`;
-      }).join(' | ');
-    }
-    if (result.modifier !== 0) {
-      breakdown += ` | Mod: ${result.modifier > 0 ? '+' : ''}${result.modifier}`;
+      breakdown = Dice.poolBreakdown({ groups: result.groups });
+      if (result.modifier !== 0) {
+        breakdown += ` | Mod: ${result.modifier > 0 ? '+' : ''}${result.modifier}`;
+      }
     }
     resultBreakdown.textContent = breakdown;
 
