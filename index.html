@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AetherRoll — a high-fidelity TTRPG dice roller. No accounts, no servers, instant rolls." />
+  <meta name="theme-color" content="#0a1628" />
+
+  <title>AetherRoll</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        AetherRoll
+        <span>TTRPG Dice</span>
+      </div>
+      <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <!-- Result -->
+      <div class="card" id="result-display">
+        <span id="result-number">–</span>
+        <span id="result-label"></span>
+        <span id="result-breakdown"></span>
+      </div>
+
+      <!-- Pool builder -->
+      <div class="card" id="pool-section">
+        <div class="section-title">Roll Pool</div>
+
+        <div id="dice-pool">
+          <span class="pool-placeholder">Tap dice below to build your roll</span>
+        </div>
+        <span id="modifier-display" style="display:none"></span>
+
+        <div class="modifier-row">
+          <label for="modifier-input">Modifier</label>
+          <input type="number" id="modifier-input" placeholder="+0" step="1" />
+        </div>
+
+        <div class="toggles-row">
+          <button class="toggle-btn" id="toggle-exploding">Exploding</button>
+          <button class="toggle-btn" id="toggle-advantage">Advantage</button>
+          <button class="toggle-btn" id="toggle-disadvantage">Disadvantage</button>
+        </div>
+
+        <div class="actions-row">
+          <button id="roll-btn" disabled>ROLL</button>
+          <button id="clear-pool-btn">Clear</button>
+        </div>
+      </div>
+
+      <!-- Dice picker -->
+      <div class="card" id="dice-picker">
+        <div class="section-title">Dice</div>
+        <div class="dice-grid">
+
+          <!-- d4 -->
+          <button class="die-btn" data-sides="4" aria-label="Add d4">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="24,6 44,38 4,38" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+              <line x1="24" y1="6" x2="24" y2="38" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+            <span class="die-label">d4</span>
+          </button>
+
+          <!-- d6 -->
+          <button class="die-btn" data-sides="6" aria-label="Add d6">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="32" height="32" rx="5" stroke="currentColor" stroke-width="2.5" fill="none"/>
+              <circle cx="17" cy="17" r="2.2" fill="currentColor"/>
+              <circle cx="31" cy="17" r="2.2" fill="currentColor"/>
+              <circle cx="17" cy="31" r="2.2" fill="currentColor"/>
+              <circle cx="31" cy="31" r="2.2" fill="currentColor"/>
+            </svg>
+            <span class="die-label">d6</span>
+          </button>
+
+          <!-- d8 -->
+          <button class="die-btn" data-sides="8" aria-label="Add d8">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="24,4 44,24 24,44 4,24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+              <line x1="4" y1="24" x2="44" y2="24" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+              <line x1="24" y1="4" x2="24" y2="44" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+            <span class="die-label">d8</span>
+          </button>
+
+          <!-- d10 -->
+          <button class="die-btn" data-sides="10" aria-label="Add d10">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="24,4 42,16 38,38 10,38 6,16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+              <line x1="24" y1="4" x2="24" y2="38" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+            <span class="die-label">d10</span>
+          </button>
+
+          <!-- d12 -->
+          <button class="die-btn" data-sides="12" aria-label="Add d12">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="24,4 36,10 44,22 40,36 28,44 20,44 8,36 4,22 12,10" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+            </svg>
+            <span class="die-label">d12</span>
+          </button>
+
+          <!-- d20 -->
+          <button class="die-btn" data-sides="20" aria-label="Add d20">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="24,4 44,16 44,32 24,44 4,32 4,16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+              <line x1="4" y1="16" x2="44" y2="16" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+              <line x1="4" y1="32" x2="44" y2="32" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+              <line x1="24" y1="4" x2="4" y2="16" stroke="currentColor" stroke-width="1.2" opacity="0.3"/>
+              <line x1="24" y1="4" x2="44" y2="16" stroke="currentColor" stroke-width="1.2" opacity="0.3"/>
+              <line x1="24" y1="44" x2="4" y2="32" stroke="currentColor" stroke-width="1.2" opacity="0.3"/>
+              <line x1="24" y1="44" x2="44" y2="32" stroke="currentColor" stroke-width="1.2" opacity="0.3"/>
+            </svg>
+            <span class="die-label">d20</span>
+          </button>
+
+          <!-- d100 -->
+          <button class="die-btn" data-sides="100" aria-label="Add d100">
+            <svg class="die-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5" fill="none"/>
+              <circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.4" fill="none"/>
+            </svg>
+            <span class="die-label">d100</span>
+          </button>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar -->
+    <aside>
+      <div class="card sidebar-card">
+        <div class="sidebar-header">
+          <h2>Roll History</h2>
+          <button id="clear-history-btn">Clear</button>
+        </div>
+        <ul id="history-list">
+          <li class="history-empty">No rolls yet</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script src="js/dice.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+    }
+  </script>
+</body>
+</html>
